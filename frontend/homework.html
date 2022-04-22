@@ -19,6 +19,7 @@
     <style>
         * {
             font-family: 'Dongle', sans-serif;
+            font-size: 25px;
         }
 
         .mytitle {
@@ -68,11 +69,26 @@
             margin-top: 10px;
         }
     </style>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "http://spartacodingclub.shop/sparta_api/weather/seoul",
+                data: {},
+                success: function (response) {
+                    let temp = response['temp'];
+
+                    $('#temp').text(temp);
+                }
+            })
+        });
+    </script>
 </head>
 
 <body>
     <div class="mytitle">
         <h1>마동석 팬명록</h1>
+        <p>현재 기온 : <span id="temp">00.0</span>도</p>
     </div>
     <div class="mypost">
         <div class="form-floating mb-3">

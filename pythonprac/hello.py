@@ -40,16 +40,39 @@
 #     if person['age'] > 20:
 #         print(person['name'])
 
-import requests  # requests 라이브러리 설치 필요
+# import requests  # requests 라이브러리 설치 필요
+#
+# r = requests.get('http://spartacodingclub.shop/sparta_api/seoulair')
+# rjson = r.json()
+#
+# rows = rjson['RealtimeCityAir']['row']
+#
+# for row in rows:
+#     gu_name = row['MSRSTE_NM']
+#     gu_mise = row['IDEX_MVL']
+#     # print(gu_name, gu_mise)
+#     if gu_mise < 60:
+#         print(gu_name)
 
-r = requests.get('http://spartacodingclub.shop/sparta_api/seoulair')
-rjson = r.json()
+import requests
+from bs4 import BeautifulSoup
 
-rows = rjson['RealtimeCityAir']['row']
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
+data = requests.get('https://movie.naver.com/movie/sdb/rank/rmovie.naver?sel=pnt&date=20210829', headers=headers)
 
-for row in rows:
-    gu_name = row['MSRSTE_NM']
-    gu_mise = row['IDEX_MVL']
-    # print(gu_name, gu_mise)
-    if gu_mise < 60:
-        print(gu_name)
+soup = BeautifulSoup(data.text, 'html.parser')
+
+# 코딩 시작
+# print(soup)
+# #old_content > table > tbody > tr:nth-child(3) > td.title > div > a
+# #old_content > table > tbody > tr:nth-child(4) > td.title > div > a
+
+movies = soup.select('#old_content > table > tbody > tr')
+# print(movies)
+
+for movie in movies:
+    a = movie.select_one('td.title > div > a')
+    # print(a)
+    if a is not None:
+        print(a.text)

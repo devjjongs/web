@@ -82,3 +82,12 @@ for movie in movies:
     # print(star.text)
     if title is not None:
         print(rank['alt'], title.text, star.text)
+
+# 수업 quiz 해설 코드
+# for movie in movies:
+#     a_title = movie.select_one('td.title > div > a')
+#     if a_title is not None:
+#         title = a_title.text
+#         rank = movie.select_one('td:nth-child(1) > img')['alt']
+#         star = movie.select_one('td.point').text
+#         print(rank, title, star)

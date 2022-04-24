@@ -25,7 +25,7 @@
             width: 100%;
             height: 300px;
 
-            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTY5gkVXh3nlFsCl4FdPReL1ZAtjxXZOcTjPA&usqp=CAU');
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://www.kukinews.com/data/kuk/image/2021/05/27/kuk202105270469.680x.0.jpg');
             background-position: center 30%;
             background-size: cover;
 
@@ -79,10 +79,14 @@
         }
 
         function save_comment() {
+            let nickname = $('#name').val();
+            let comment = $('#comment').val();
+            // console.log(nickname, comment)
+
             $.ajax({
                 type: 'POST',
                 url: '/homework',
-                data: {sample_give: '데이터전송'},
+                data: {nickname_give: nickname, comment_give: comment},
                 success: function (response) {
                     alert(response['msg'])
                     window.location.reload()
@@ -96,7 +100,24 @@
                 url: "/homework",
                 data: {},
                 success: function (response) {
-                    alert(response["msg"])
+                    let rows = response['comments']
+                    // console.log(rows)
+                    for (let i = 0; i < rows.length; i++) {
+                        let name = rows[i]['nickname']
+                        let comment = rows[i]['comment']
+                        // console.log(name, comment)
+
+                        let temp_html = `<div class="card">
+                                            <div class="card-body">
+                                                <blockquote class="blockquote mb-0">
+                                                    <p>${comment}</p>
+                                                    <footer class="blockquote-footer">${name}</footer>
+                                                </blockquote>
+                                            </div>
+                                         </div>`
+
+                        $('#comment-list').append(temp_html);
+                    }
                 }
             });
         }
@@ -104,7 +125,7 @@
 </head>
 <body>
     <div class="mypic">
-        <h1>마동석 팬명록</h1>
+        <h1>에스파 팬명록</h1>
         <p>현재 기온 : <span id="temp">00.0</span>도</p>
     </div>
     <div class="mypost">
@@ -120,30 +141,7 @@
         <button onclick="save_comment()" type="button" class="btn btn-dark">응원 남기기</button>
     </div>
     <div class="mycards" id="comment-list">
-        <div class="card">
-            <div class="card-body">
-                <blockquote class="blockquote mb-0">
-                    <p>새로운 앨범 너무 멋져요!</p>
-                    <footer class="blockquote-footer">호빵맨</footer>
-                </blockquote>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <blockquote class="blockquote mb-0">
-                    <p>새로운 앨범 너무 멋져요!</p>
-                    <footer class="blockquote-footer">호빵맨</footer>
-                </blockquote>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <blockquote class="blockquote mb-0">
-                    <p>새로운 앨범 너무 멋져요!</p>
-                    <footer class="blockquote-footer">호빵맨</footer>
-                </blockquote>
-            </div>
-        </div>
+
     </div>
 </body>
 </html>

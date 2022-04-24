@@ -52,21 +52,39 @@
         }
     </style>
     <script>
+        /*로딩 완료 시 동작*/
         $(document).ready(function () {
             show_order();
         });
 
+        /*주문 불러오기*/
         function show_order() {
             $.ajax({
                 type: 'GET',
                 url: '/mars',
                 data: {},
                 success: function (response) {
-                    alert(response['msg'])
+                    // console.log(response)
+                    let rows = response['orders']
+                    for (let i = 0; i < rows.length; i++) {
+                        let name = rows[i]['name']
+                        let address = rows[i]['address']
+                        let size = rows[i]['size']
+                        // console.log(name, address, size)
+
+                        let temp_html = `<tr>
+                                            <th scope="col">${name}</th>
+                                            <th scope="col">${address}</th>
+                                            <th scope="col">${size}</th>
+                                        </tr>`
+
+                        $('#order-box').append(temp_html);
+                    }
                 }
             });
         }
 
+        /*주문 저장하기*/
         function save_order() {
             let name = $('#name').val();
             let address = $('#address').val();
@@ -123,8 +141,8 @@
                     <th scope="col">평수</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
+            <tbody id="order-box">
+                <!--<tr>
                     <td>홍길동</td>
                     <td>서울시 용산구</td>
                     <td>20평</td>
@@ -138,7 +156,7 @@
                     <td>세종대왕</td>
                     <td>세종시 대왕구</td>
                     <td>30평</td>
-                </tr>
+                </tr>-->
             </tbody>
         </table>
     </div>
